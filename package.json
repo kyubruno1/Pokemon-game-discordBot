@@ -1,0 +1,22 @@
+{
+  "name": "agumon-discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord-api-types": "^0.36.3",
+    "discord.js": "^14.0.3",
+    "dotenv": "^16.0.1"
+  },
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
