@@ -1,27 +1,59 @@
-import { Client, GatewayIntentBits } from 'discord.js'
-import { config } from 'dotenv'
+import {
+  Client,
+  GatewayIntentBits,
+  AttachmentBuilder,
+  EmbedBuilder,
+  Routes,
+} from "discord.js";
+import { config } from "dotenv";
+import { REST } from "@discordjs/rest";
+import catchCommand from "./commands/catch.js";
+import { fetchPokemon, pokemonEvo } from "./controllers/CatchController.js";
 
 config();
 
+const TOKEN = process.env.TOKEN;
+const GUILD_ID = process.env.GUILD_ID;
+const CLIENT_ID = process.env.CLIENT_ID;
+const GUILD_ID_SINDICATO = process.env.GUILD_ID_SINDICATO;
+
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
-})
-const TOKEN = process.env.TOKEN
-client.login(TOKEN)
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+});
 
-client.on('ready', () => {
-    console.log(`${client.user.tag} has logged in`)
-})
+const rest = new REST({ version: "10" }).setToken(TOKEN);
 
-client.on('messageCreate', (message) => {
-    console.log(message.content)
-    if (message.content === 'ping') {
-        message.reply('Pong!')
-        .then(() => console.log(`Respondendo a mensagem: ${message.content}`))
-        .catch((err) => console.log(err))
+client.on("ready", () => console.log(`${client.user.tag} has logged in`));
+
+client.on("interactionCreate", async (interaction) => {
+  if (interaction.isChatInputCommand()) {
+    if (interaction.commandName === "capturar") {
+      try {
+        let pokemonName = await fetchPokemon();
+        interaction.reply(
+          `${pokemonName.name}, ${pokemonName.id}`,
+          pokemonEvo(pokemonName.id)
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
-})
+  }
+});
+
+async function main() {
+  const commands = [catchCommand];
+  try {
+    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
+      body: commands,
+    });
+    client.login(TOKEN);
+  } catch (error) {
+    console.log(error);
+  }
+}
+main();
