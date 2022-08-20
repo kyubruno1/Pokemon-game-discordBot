@@ -1,12 +1,17 @@
-import { DataTypes } from 'sequelize';
-import db from '../db/conn.js';
+// import { DataTypes } from 'sequelize';
+const { DataTypes } = require('sequelize');
+const db = require('../db/conn.js');
+// import db from '../db/conn.js';
 
 const Player = db.define('Player', {
-    name: {
-        type: DataTypes.STRING,
-    },
-    pokemon: {
-        type: DataTypes.JSON,
-    },
+  name: {
+    type: DataTypes.STRING,
+  },
+  discord_id: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+  },
 });
-export default Player;
+
+module.exports = Player;
+// export default Player;
