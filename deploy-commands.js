@@ -36,7 +36,7 @@ rest
 //remove um comando (ir em config do server -> integrações -> ícone de "/" -> botão direito em cima do comando desejado e copiar ID),
 //também não esquecer de tirar ele do método acima
 // rest
-//   .delete(Routes.applicationGuildCommand(CLIENT_ID, GUILD_ID), 'commandId'))
+//   .delete(Routes.applicationGuildCommand(CLIENT_ID, GUILD_ID_SINDICATO, 'commandId'))
 //   .then(() => console.log('Successfully deleted guild command'))
 //   .catch(console.error);
 

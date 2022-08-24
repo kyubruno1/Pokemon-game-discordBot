@@ -13,16 +13,28 @@ async function catchPokemon(userID) {
   return pokemon;
 }
 
-async function pokemonEvo(pokemonID) {
-  // const result = await fetch(`https://pokeapi.co/api/v2/evolution-chain/${pokemonID}/`);
-  // const pokemon = await result.json();
-  console.table(pokemonID);
-  //   console.log(pokemon.chain.evolves_to);
-  //   console.log(pokemon.chain.evolves_to[0].species.url);
-}
-
 async function getAllPokemons(userID) {
   const pokemons = await PokemonDB.findAll({ where: { PlayerDiscordId: userID } });
   return pokemons;
 }
-module.exports = { catchPokemon, getAllPokemons };
+
+async function getOnePokemon(pokemonID, userID) {
+  console.log(pokemonID, userID);
+  const pokemon = await PokemonDB.findOne({
+    where: { pokemon_id: pokemonID, PlayerDiscordId: userID },
+  });
+  return pokemon;
+}
+
+async function evolvePokemon(pokemonID) {
+  const result = await fetch(`https://pokeapi.co/api/v2/evolution-chain/${pokemonID}/`);
+  const pokemon = await result.json();
+  console.table(pokemon);
+  //   console.log(pokemon.chain.evolves_to);
+  //   console.log(pokemon.chain.evolves_to[0].species.url);
+  // if (evo.evolves_to[0].species.name === 'ivysaur') {
+  //   console.log(evo.evolves_to[0].evolves_to);
+  // }
+}
+
+module.exports = { catchPokemon, getAllPokemons, getOnePokemon, evolvePokemon };

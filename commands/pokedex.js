@@ -9,9 +9,11 @@ module.exports = {
       const pokemons = await getAllPokemons(interaction.user.id);
 
       let array = [];
+
       pokemons.forEach((el) => {
-        array.push(el.name);
+        array.push(`#${el.id} - ${el.name}\n`);
       });
+
       interaction.reply(array.toString());
     } catch (error) {
       console.log(error);

@@ -21,28 +21,43 @@ for (const file of commandsFiles) {
 }
 
 //Quando o client estiver pronto, este código vai rodar uma vez
-client.once('ready', () => {
-  console.log(`${client.user.tag} logou com sucesso!`);
-});
+// client.once('ready', () => {
+//   console.log(`${client.user.tag} logou com sucesso!`);
+// });
 
 //Cria as interações
-client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+// client.on('interactionCreate', async (interaction) => {
+//   if (!interaction.isChatInputCommand()) return;
 
-  const command = client.commands.get(interaction.commandName);
+//   const command = client.commands.get(interaction.commandName);
 
-  if (!command) return;
+//   if (!command) return;
 
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.log(error);
-    await interaction.reply({
-      content: 'Ocorreu um erro executando este comando.',
-      ephemeral: true,
-    });
+//   try {
+//     await command.execute(interaction);
+//   } catch (error) {
+//     console.log(error);
+//     await interaction.reply({
+//       content: 'Ocorreu um erro executando este comando.',
+//       ephemeral: true,
+//     });
+//   }
+// });
+
+//path dos eventos
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+  const filePath = path.join(eventsPath, file);
+  const event = require(filePath);
+
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
   }
-});
+}
 
 client.login(TOKEN);
 
