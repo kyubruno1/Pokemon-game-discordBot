@@ -7,7 +7,33 @@ const TOKEN = process.env.TOKEN;
 
 //Criar uma nova instância do client
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+//cria uma nova coleção
 client.commands = new Collection();
+client.buttons = new Collection();
+
+//path dos componentes
+const componentsPath = path.join(__dirname, 'components');
+const componentsFolders = fs.readdirSync(componentsPath);
+
+for (const folder of componentsFolders) {
+  const componentsFilesPath = path.join(componentsPath, folder);
+  const componentsFiles = fs
+    .readdirSync(componentsFilesPath)
+    .filter((file) => file.endsWith('.js'));
+
+  console.log(componentsFilesPath);
+
+  switch (folder) {
+    case 'buttons':
+      for (const file of componentsFiles) {
+        const filePath = path.join(componentsFilesPath, file);
+        const button = require(filePath);
+        client.buttons.set(button.data.name, button);
+      }
+      break;
+  }
+}
 
 //path dos comandos
 const commandsPath = path.join(__dirname, 'commands');
@@ -19,30 +45,6 @@ for (const file of commandsFiles) {
   //Define um novo item na coleção com a chave como nome do comando e o valor como módulo exportado
   client.commands.set(command.data.name, command);
 }
-
-//Quando o client estiver pronto, este código vai rodar uma vez
-// client.once('ready', () => {
-//   console.log(`${client.user.tag} logou com sucesso!`);
-// });
-
-//Cria as interações
-// client.on('interactionCreate', async (interaction) => {
-//   if (!interaction.isChatInputCommand()) return;
-
-//   const command = client.commands.get(interaction.commandName);
-
-//   if (!command) return;
-
-//   try {
-//     await command.execute(interaction);
-//   } catch (error) {
-//     console.log(error);
-//     await interaction.reply({
-//       content: 'Ocorreu um erro executando este comando.',
-//       ephemeral: true,
-//     });
-//   }
-// });
 
 //path dos eventos
 const eventsPath = path.join(__dirname, 'events');

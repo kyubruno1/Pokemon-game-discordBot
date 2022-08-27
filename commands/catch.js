@@ -7,12 +7,6 @@ const { catchPokemon } = require('../controllers/CatchController');
 module.exports = {
   data: new SlashCommandBuilder().setName('capturar').setDescription('Capturar um pokémon'),
   async execute(interaction) {
-    // const player = await checkIfExists(interaction.user.id);
-    // if (!player) {
-    //   await savePlayer(interaction.user.tag, interaction.user.id);
-    //   console.log('usuário criado');
-    // }
-    // await checkIfExists(interaction.user.tag, interaction.user.id);
     await PlayerDB.findOrCreate({
       where: { name: interaction.user.tag, discord_id: interaction.user.id },
     });

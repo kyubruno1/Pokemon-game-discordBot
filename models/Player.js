@@ -1,7 +1,5 @@
-// import { DataTypes } from 'sequelize';
 const { DataTypes } = require('sequelize');
 const db = require('../db/conn.js');
-// import db from '../db/conn.js';
 
 const Player = db.define('Player', {
   name: {
@@ -11,7 +9,9 @@ const Player = db.define('Player', {
     type: DataTypes.STRING,
     primaryKey: true,
   },
+  got_initial: {
+    type: DataTypes.BOOLEAN,
+  },
 });
 
 module.exports = Player;
-// export default Player;

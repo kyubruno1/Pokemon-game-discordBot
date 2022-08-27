@@ -1,11 +1,30 @@
 const PlayerDB = require('../models/Player.js');
 
-async function savePlayer(username, usernameId) {
-  await PlayerDB.create({ name: username, discord_id: usernameId });
+async function savePlayer(name, discord_id) {
+  await PlayerDB.create({ name, discord_id });
 }
 
-async function checkIfExistsAndCreate(username, usernameId) {
-  return await PlayerDB.findOrCreate({ where: { name: username, discord_id: usernameId } });
+async function checkIfExistsAndCreate(name, discord_id) {
+  const user = await PlayerDB.findOne({
+    where: { name, discord_id },
+  });
+
+  if (user) {
+    return user;
+  } else {
+    return await PlayerDB.create({ name, discord_id });
+    // return console.log('não existe mas ja foi criado');
+  }
 }
 
-module.exports = { savePlayer, checkIfExistsAndCreate };
+async function checkifGotInitial(name, discord_id) {
+  const user = await PlayerDB.findOne({ where: { name, discord_id } }).then((res) => res.toJSON());
+
+  if (!user.got_initial) {
+    console.log('nulo');
+  } else {
+    console.log('not null');
+  }
+}
+
+module.exports = { savePlayer, checkIfExistsAndCreate, checkifGotInitial };

@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const interactionCreate = require('../events/interactionCreate.js');
 const PokemonDB = require('../models/Pokemon.js');
 
 function dice() {
@@ -19,7 +20,6 @@ async function getAllPokemons(userID) {
 }
 
 async function getOnePokemon(pokemonID, userID) {
-  console.log(pokemonID, userID);
   const pokemon = await PokemonDB.findOne({
     where: { pokemon_id: pokemonID, PlayerDiscordId: userID },
   });
@@ -37,4 +37,14 @@ async function evolvePokemon(pokemonID) {
   // }
 }
 
-module.exports = { catchPokemon, getAllPokemons, getOnePokemon, evolvePokemon };
+async function starterPokemon(customId, userID) {
+  console.log(userID);
+  console.log(customId);
+  const result = await fetch(`http://pokeapi.co/api/v2/pokemon/${customId}/`);
+  const pokemon = await result.json();
+
+  await PokemonDB.create({ name: pokemon.name, pokemon_id: pokemon.id, PlayerDiscordId: userID });
+  return pokemon;
+}
+
+module.exports = { catchPokemon, getAllPokemons, getOnePokemon, evolvePokemon, starterPokemon };
