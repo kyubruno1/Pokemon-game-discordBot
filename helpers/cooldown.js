@@ -1,5 +1,5 @@
 const cooldown = new Set(); //cria o cooldown
-const cooldownTime = 300000; //60000 é igual a 1 minuto
+const cooldownTime = 60000; //60000 é igual a 1 minuto
 
 module.exports = function cooldownFunction(userID) {
   if (cooldown.has(userID)) {

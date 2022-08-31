@@ -1,27 +1,28 @@
 const fetch = require('node-fetch');
 const PokemonDB = require('../models/Pokemon.js');
 const { dice } = require('../helpers/dice');
+/*
+adicionar os metodos para gerenciar os pokemons
+tipo buscar um, buscar todos, capturar um, evoluir, batalhar
+*/
 
-// function dice() {
-//   return (Math.floor(Math.random() * 150) + 1).toString();
-// }
-
-async function catchPokemon(userID) {
+async function findWildPokemon() {
   const result = await fetch(`http://pokeapi.co/api/v2/pokemon/${dice(150)}/`);
   const pokemon = await result.json();
 
-  // await PokemonDB.create({ name: pokemon.name, pokedex_id: pokemon.id, PlayerDiscordId: userID });
   return pokemon;
 }
-
+async function savePokemon(name, pokedex_id, PlayerDiscordId) {
+  await PokemonDB.create({ name, pokedex_id, PlayerDiscordId });
+}
 async function getAllPokemons(userID) {
   const pokemons = await PokemonDB.findAll({ where: { PlayerDiscordId: userID } });
   return pokemons;
 }
 
-async function getOnePokemon(pokemonID, userID) {
+async function getOnePokemon(pokedex_id, PlayerDiscordId) {
   const pokemon = await PokemonDB.findOne({
-    where: { pokedex_id: pokemonID, PlayerDiscordId: userID },
+    where: { pokedex_id, PlayerDiscordId },
   });
   return pokemon;
 }
@@ -36,19 +37,4 @@ async function evolvePokemon(pokemonID) {
   //   console.log(evo.evolves_to[0].evolves_to);
   // }
 }
-
-async function starterPokemon(customId, userID) {
-  const result = await fetch(`http://pokeapi.co/api/v2/pokemon/${customId}/`);
-  const pokemon = await result.json();
-
-  await PokemonDB.create({ name: pokemon.name, pokedex_id: pokemon.id, PlayerDiscordId: userID });
-  return pokemon;
-}
-
-module.exports = {
-  catchPokemon,
-  getAllPokemons,
-  getOnePokemon,
-  evolvePokemon,
-  starterPokemon,
-};
+module.exports = { findWildPokemon, savePokemon };

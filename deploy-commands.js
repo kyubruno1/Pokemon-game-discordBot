@@ -29,10 +29,11 @@ rest
   .then(() => console.log('Comandos registrados com sucesso.'))
   .catch(console.error);
 
-rest
-  .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID_SINDICATO), { body: commands })
-  .then(() => console.log('Comandos registrados com sucesso.'))
-  .catch(console.error);
+// rest
+//   .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID_SINDICATO), { body: commands })
+//   .then(() => console.log('Comandos registrados com sucesso.'))
+//   .catch(console.error);
+
 //remove um comando (ir em config do server -> integrações -> ícone de "/" -> botão direito em cima do comando desejado e copiar ID),
 //também não esquecer de tirar ele do método acima
 // rest

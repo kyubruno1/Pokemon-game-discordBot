@@ -8,9 +8,7 @@ module.exports = {
   },
   async execute(interaction) {
     try {
-      const user = await checkIfExistsAndCreate(interaction.user.tag, interaction.user.id).then(
-        (result) => result.toJSON()
-      );
+      const user = await checkIfExistsAndCreate(interaction.user.tag, interaction.user.id);
 
       if (!user.got_initial) {
         await starterPokemon(interaction.customId, interaction.user.id);

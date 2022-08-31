@@ -17,6 +17,7 @@ module.exports = {
     } else if (interaction.isButton()) {
       const button = interaction.client.buttons.get(interaction.customId);
 
+      // console.log(button);
       if (!button) return;
       try {
         await button.execute(interaction);

@@ -7,6 +7,7 @@ const TOKEN = process.env.TOKEN;
 
 //Criar uma nova instância do client
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+// const client = new Client({ intents: 32767 });
 
 //cria uma nova coleção
 client.commands = new Collection();
@@ -21,8 +22,6 @@ for (const folder of componentsFolders) {
   const componentsFiles = fs
     .readdirSync(componentsFilesPath)
     .filter((file) => file.endsWith('.js'));
-
-  console.log(componentsFilesPath);
 
   switch (folder) {
     case 'buttons':
