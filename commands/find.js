@@ -4,6 +4,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
+  ComponentType,
 } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
@@ -30,6 +31,14 @@ module.exports = {
         return encounterJson[index];
       };
 
+      //descrição do encontro
+      const locationPath = path.join(__dirname, '..', 'assets', 'data', 'location.json');
+      let location = fs.readFileSync(locationPath, { encoding: 'utf8', flag: 'r' });
+      const locationJson = JSON.parse(location);
+      const returnLocation = (index) => {
+        return locationJson[index];
+      };
+
       //pokemon status
       const pokemon = await findWildPokemon();
       const pokemonLevel = pokemonLevelDice();
@@ -53,7 +62,9 @@ module.exports = {
           iconURL: 'https://pngimg.com/uploads/pokeball/pokeball_PNG8.png',
         })
         .setDescription(
-          `Encontrou um ${pokemon.name} ${returnEncounter(dice(encounterJson.length - 1))}`
+          `Encontrou um ${pokemon.name} em ${returnLocation(
+            dice(locationJson.length - 1)
+          )} ${returnEncounter(dice(encounterJson.length - 1))}`
         )
         .addFields(
           { name: 'Nome', value: `${pokemon.name}` },
@@ -66,8 +77,27 @@ module.exports = {
         .setImage(`${pokemonSprite}`)
         .setTimestamp();
 
+      //cria coletor para saber se usuário já clicou no botão
+      const collector = interaction.channel.createMessageComponentCollector({
+        componentType: ComponentType.Button,
+        time: 15000,
+      });
+      collector.on('collect', async (i) => {
+        if (i.user.id === interaction.user.id) {
+          if (i.customId === 'catch') {
+            row.components[0].setDisabled(true); //desabilita botão capturar
+            // row.components[1].setDisabled(true); //desabilita botão batalhar
+          }
+          if (i.customId === 'battle') {
+            row.components[0].setDisabled(true); //desabilita botão capturar
+            row.components[1].setDisabled(true); //desabilita botão batalhar
+          }
+          interaction.editReply({ components: [row] });
+        }
+      });
+
       await interaction.reply({
-        // content: `${pokemon.name}, ${pokemon.id}, ${interaction.user}`,
+        content: `${interaction.user}`,
         // ephemeral: true,
         components: [row],
         embeds: [EmbedPokemon],
