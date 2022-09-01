@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const cooldown = require('../helpers/cooldown');
+const cooldownFind = require('../helpers/cooldownFind');
 const { getAllPokemons } = require('../controllers/CatchController');
 
 module.exports = {

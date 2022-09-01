@@ -12,6 +12,9 @@ const Player = db.define('Player', {
   got_initial: {
     type: DataTypes.BOOLEAN,
   },
+  daily_rewards: {
+    type: DataTypes.DATE,
+  },
 });
 
 module.exports = Player;

@@ -9,16 +9,10 @@ module.exports = {
 
     if (cleanUserId === interaction.user.id) {
       //busca inventário do usuário
-      // const playerInventory = await InventoryDB.findOne({
-      //   where: { PlayerDiscordId: cleanUserId },
-      // });
-      //Se não houver inventário, retorna a mensagem
-      // if (!playerInventory) {
-      //   interaction.reply({
-      //     content: `Digite /inicial para escolher seu pokémon inicial primeiro!`,
-      //     ephemeral: true,
-      //   });
-      // } else {
+      const playerInventory = await InventoryDB.findOne({
+        where: { PlayerDiscordId: cleanUserId },
+      });
+
       /* 
         AQUI É ONDE A LÓGICA DE CAPTURA VAI FICAR 
         */
@@ -33,7 +27,6 @@ module.exports = {
           ephemeral: true,
         });
       }
-      // }
 
       // console.log(interaction.message.embeds[0].data);
     } else {

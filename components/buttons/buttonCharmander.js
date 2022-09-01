@@ -16,7 +16,9 @@ module.exports = {
           { got_initial: true },
           { where: { discord_id: interaction.user.id } }
         );
-        interaction.reply('Parabéns, você escolheu Charmander como pokémon inicial');
+        interaction.reply(
+          `Parabéns ${interaction.user}, você escolheu Charmander como pokemon inicial e recebeu 5 pokebolas para iniciar sua jornada pokemon`
+        );
       } else {
         interaction.reply(`Já recebeu um inicial né seu espertinho!! ${interaction.user}`);
       }

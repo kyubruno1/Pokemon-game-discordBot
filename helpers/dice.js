@@ -8,7 +8,7 @@ function pokemonLevelDice() {
   return (Math.floor(Math.random() * 20) + 1).toString();
 }
 
-function isShiny() {
+function isShinyDice() {
   //Chance de 0,5%
   const chance = (Math.floor(Math.random() * 200) + 1).toString();
   if (chance == 1) {
@@ -16,4 +16,4 @@ function isShiny() {
   }
   return false;
 }
-module.exports = { dice, pokemonLevelDice, isShiny };
+module.exports = { dice, pokemonLevelDice, isShinyDice };

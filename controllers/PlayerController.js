@@ -35,8 +35,8 @@ async function checkIfExistsAndCreate(name, discord_id) {
   }
 }
 
-async function checkifGotInitial(name, discord_id) {
-  const user = await PlayerDB.findOne({ where: { name, discord_id } }).then((res) => res.toJSON());
+async function checkifGotInitial(discord_id) {
+  const user = await PlayerDB.findOne({ where: { discord_id } }).then((res) => res.toJSON());
 
   if (!user.got_initial) {
     console.log('nulo');

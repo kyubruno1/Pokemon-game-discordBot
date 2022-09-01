@@ -8,9 +8,9 @@ const {
 } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const cooldown = require('../helpers/cooldown');
+const cooldownFind = require('../helpers/cooldownFind');
 const { findWildPokemon } = require('../controllers/PokemonController');
-const { pokemonLevelDice, isShiny, dice } = require('../helpers/dice');
+const { pokemonLevelDice, isShinyDice, dice } = require('../helpers/dice');
 const InventoryDB = require('../models/Inventory');
 
 module.exports = {
@@ -29,9 +29,16 @@ module.exports = {
         ephemeral: true,
       });
     } else {
-      if (cooldown(interaction.user.id)) {
+      const cooldown = cooldownFind(interaction.user.id);
+      if (cooldown) {
+        const agora = new Date();
+        const diffMs = cooldown - agora;
+
+        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
         await interaction.reply({
-          content: 'Apressadinho hein? Espera o cooldown aí!',
+          content: `Apressadinho hein? Espera o cooldown aí! Faltam: ${minutes}m ${seconds}s`,
           ephemeral: true,
         });
       } else {
@@ -54,7 +61,7 @@ module.exports = {
         //pokemon status
         const pokemon = await findWildPokemon();
         const pokemonLevel = pokemonLevelDice();
-        const pokemonIsShiny = isShiny();
+        const pokemonIsShiny = isShinyDice();
         let pokemonSprite = pokemon.sprites.other.home.front_default;
         if (pokemonIsShiny) {
           pokemon.name = `🌟 ${pokemon.name}`;
