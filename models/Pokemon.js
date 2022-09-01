@@ -11,6 +11,9 @@ const Pokemon = db.define(
     pokedex_id: {
       type: DataTypes.STRING,
     },
+    growth_rate: {
+      type: DataTypes.STRING,
+    },
   },
   {
     timestamps: false,

@@ -1,13 +1,13 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-const { createImage } = require('../helpers/image');
+const { createImagePokemon } = require('../helpers/image');
 
 module.exports = {
   data: new SlashCommandBuilder().setName('inicial').setDescription('Escolha um Pokémon inicial!'),
   async execute(interaction) {
-    const charmander = await createImage('charmander');
-    const bulbasaur = await createImage('bulbasaur');
-    const squirtle = await createImage('squirtle');
+    const charmander = await createImagePokemon('charmander');
+    const bulbasaur = await createImagePokemon('bulbasaur');
+    const squirtle = await createImagePokemon('squirtle');
 
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()

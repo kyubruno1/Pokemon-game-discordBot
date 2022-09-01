@@ -9,32 +9,31 @@ module.exports = {
 
     if (cleanUserId === interaction.user.id) {
       //busca inventário do usuário
-      const playerInventory = await InventoryDB.findOne({
-        where: { PlayerDiscordId: cleanUserId },
-      });
-
+      // const playerInventory = await InventoryDB.findOne({
+      //   where: { PlayerDiscordId: cleanUserId },
+      // });
       //Se não houver inventário, retorna a mensagem
-      if (!playerInventory) {
+      // if (!playerInventory) {
+      //   interaction.reply({
+      //     content: `Digite /inicial para escolher seu pokémon inicial primeiro!`,
+      //     ephemeral: true,
+      //   });
+      // } else {
+      /* 
+        AQUI É ONDE A LÓGICA DE CAPTURA VAI FICAR 
+        */
+      if (playerInventory.pokeball <= 0) {
         interaction.reply({
-          content: `Digite /inicial para escolher seu pokémon inicial primeiro!`,
+          content: `Infelizmente você não tem pokébolas, ganhe batalhas de outros pokémons e compre pokebolas na loja`,
           ephemeral: true,
         });
       } else {
-        /* 
-        AQUI É ONDE A LÓGICA DE CAPTURA VAI FICAR 
-        */
-        if (playerInventory.pokeball <= 0) {
-          interaction.reply({
-            content: `Infelizmente você não tem pokébolas, ganhe batalhas de outros pokémons e compre pokebolas na loja`,
-            ephemeral: true,
-          });
-        } else {
-          interaction.reply({
-            content: `Logo menos vai funcionar belezinha`,
-            ephemeral: true,
-          });
-        }
+        interaction.reply({
+          content: `Logo menos vai funcionar belezinha`,
+          ephemeral: true,
+        });
       }
+      // }
 
       // console.log(interaction.message.embeds[0].data);
     } else {
