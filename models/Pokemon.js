@@ -14,6 +14,12 @@ const Pokemon = db.define(
     growth_rate: {
       type: DataTypes.STRING,
     },
+    is_shiny: {
+      type: DataTypes.BOOLEAN,
+    },
+    total_exp: {
+      type: DataTypes.INTEGER,
+    },
   },
   {
     timestamps: false,

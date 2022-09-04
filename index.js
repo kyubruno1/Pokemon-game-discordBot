@@ -6,12 +6,20 @@ const conn = require('./db/conn');
 const TOKEN = process.env.TOKEN;
 
 //Criar uma nova instância do client
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildMessages,
+  ],
+});
 // const client = new Client({ intents: 32767 });
 
 //cria uma nova coleção
 client.commands = new Collection();
 client.buttons = new Collection();
+client.modals = new Collection();
+client.selectMenus = new Collection();
 
 //path dos componentes
 const componentsPath = path.join(__dirname, 'components');
@@ -29,6 +37,19 @@ for (const folder of componentsFolders) {
         const filePath = path.join(componentsFilesPath, file);
         const button = require(filePath);
         client.buttons.set(button.data.name, button);
+      }
+    case 'modals':
+      for (const file of componentsFiles) {
+        const filePath = path.join(componentsFilesPath, file);
+        const modal = require(filePath);
+        client.modals.set(modal.data.name, modal);
+      }
+      break;
+    case 'selectMenus':
+      for (const file of componentsFiles) {
+        const filePath = path.join(componentsFilesPath, file);
+        const menu = require(filePath);
+        client.selectMenus.set(menu.data.name, menu);
       }
       break;
   }

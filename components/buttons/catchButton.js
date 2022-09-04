@@ -1,4 +1,6 @@
 const InventoryDB = require('../../models/Inventory');
+const { catchPercentage } = require('../../controllers/CatchController');
+const PokemonDB = require('../../models/Pokemon');
 
 module.exports = {
   data: {
@@ -16,18 +18,54 @@ module.exports = {
       /* 
         AQUI É ONDE A LÓGICA DE CAPTURA VAI FICAR 
         */
-      if (playerInventory.pokeball <= 0) {
+
+      let playerPokeball = playerInventory.pokeball;
+      if (playerPokeball <= 0) {
         interaction.reply({
           content: `Infelizmente você não tem pokébolas, ganhe batalhas de outros pokémons e compre pokebolas na loja`,
           ephemeral: true,
         });
       } else {
-        interaction.reply({
-          content: `Logo menos vai funcionar belezinha`,
-          ephemeral: true,
-        });
-      }
+        const pokemonName = interaction.message.embeds[0].fields[0].value;
+        const pokemonId = interaction.message.embeds[0].fields[1].value;
+        const pokemonLevel = interaction.message.embeds[0].fields[2].value;
+        const pokemonShiny = interaction.message.embeds[0].fields[3].value;
+        const pokemonGrowth = 'Normal';
 
+        const porcentagem = catchPercentage(pokemonLevel);
+        const dice = Math.floor(Math.random() * 100) + 1;
+
+        //modifica a quantidade de pokebola no banco de dados
+        playerPokeball = playerPokeball - 1;
+        playerInventory.update({ pokeball: playerPokeball });
+
+        /* Tanto dado quanto a porcentagem são numeros de 0 a 100
+        a porcentagem indica o número limite 
+        exemplo: dado saiu valor 30, significa 30% de chance
+        assim que rolar o dado, será dado um valor de 0 a 100. .
+        Caso o número do dado for maior que a porcentagem, indica que não capturou o pokemon
+        */
+
+        if (dice <= porcentagem) {
+          await PokemonDB.create({
+            name: pokemonName,
+            pokedex_id: pokemonId,
+            growth_rate: pokemonGrowth,
+            is_shiny: pokemonShiny,
+            total_exp: pokemonLevel,
+            PlayerDiscordId: interaction.user.id,
+          });
+
+          interaction.reply({
+            content: `${interaction.user} capturou um ${pokemonName} level ${pokemonLevel}, parabéns!`,
+          });
+        } else {
+          interaction.reply({
+            content: 'Pokemon escapou... que pena',
+            ephemeral: true,
+          });
+        }
+      }
       // console.log(interaction.message.embeds[0].data);
     } else {
       interaction.reply({

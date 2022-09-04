@@ -31,8 +31,10 @@ module.exports = {
     } else {
       const cooldown = cooldownFind(interaction.user.id);
       if (cooldown) {
-        const agora = new Date();
-        const diffMs = cooldown - agora;
+        // const agora = new Date();
+        const now = Date.now();
+        console.log(now);
+        const diffMs = cooldown - now;
 
         const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
@@ -68,17 +70,21 @@ module.exports = {
           pokemonSprite = pokemon.sprites.other.home.front_shiny;
         }
 
+        //cria os botoes
         const row = new ActionRowBuilder().addComponents(
           new ButtonBuilder()
             .setCustomId('catch')
             .setLabel('Capturar')
+            .setEmoji('🔴')
             .setStyle(ButtonStyle.Primary),
           new ButtonBuilder()
             .setCustomId('battle')
             .setLabel('Batalhar')
+            .setEmoji('⚔️')
             .setStyle(ButtonStyle.Danger)
         );
 
+        //cria o embed
         const EmbedPokemon = new EmbedBuilder()
           .setColor('EE1515')
           .setTitle('Encontrou um pokémon')
@@ -105,7 +111,7 @@ module.exports = {
         //cria coletor para saber se usuário já clicou no botão
         const collector = interaction.channel.createMessageComponentCollector({
           componentType: ComponentType.Button,
-          time: 15000,
+          time: 30000,
         });
         collector.on('collect', async (i) => {
           if (i.user.id === interaction.user.id) {
@@ -120,7 +126,13 @@ module.exports = {
             interaction.editReply({ components: [row] });
           }
         });
-
+        collector.on('end', async (i) => {
+          row.components[0].setDisabled(true); //desabilita botão capturar
+          row.components[1].setDisabled(true); //desabilita botão batalhar
+          interaction.editReply({ content: 'Acabou o tempo!', components: [row] });
+        });
+        // if (acabou == true) {
+        // }
         await interaction.reply({
           content: `${interaction.user}`,
           // ephemeral: true,

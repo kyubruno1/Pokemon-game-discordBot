@@ -7,7 +7,7 @@ tipo buscar um, buscar todos, capturar um, evoluir, batalhar
 */
 
 async function findWildPokemon() {
-  const result = await fetch(`http://pokeapi.co/api/v2/pokemon/${dice(150)}/`);
+  const result = await fetch(`http://pokeapi.co/api/v2/pokemon/${dice(151)}/`);
   const pokemon = await result.json();
 
   return pokemon;

@@ -1,11 +1,11 @@
 function dice(value) {
-  //Dado padrão, retorna um valor aleatório dentro do estabelecido no argumento da função
+  //Dado padrão, retorna um valor aleatório +1 dentro do estabelecido no argumento da função
   return (Math.floor(Math.random() * value) + 1).toString();
 }
 
 function pokemonLevelDice() {
   //Dado que retorna aleatório de um à 20 (padrão inicial) para o spawn de pokémon
-  return (Math.floor(Math.random() * 20) + 1).toString();
+  return (Math.floor(Math.random() * 100) + 1).toString();
 }
 
 function isShinyDice() {
