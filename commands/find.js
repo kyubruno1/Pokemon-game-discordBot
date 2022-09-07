@@ -69,7 +69,8 @@ module.exports = {
           pokemon.name = `🌟 ${pokemon.name}`;
           pokemonSprite = pokemon.sprites.other.home.front_shiny;
         }
-
+        const growthRate = ['Muito lento', 'Lento', 'Normal', 'Rápido', 'Muito rápido'];
+        const growthRandom = Math.floor(Math.random() * growthRate.length);
         //cria os botoes
         const row = new ActionRowBuilder().addComponents(
           new ButtonBuilder()
@@ -98,11 +99,12 @@ module.exports = {
             )} ${returnEncounter(dice(encounterJson.length - 1))}`
           )
           .addFields(
-            { name: 'Nome', value: `${pokemon.name}` },
-            // { name: '\u200B', value: '\u200B' },
+            { name: '\u200B', value: '\u200B' },
+            { name: 'Nome', value: `${pokemon.name}`, inline: true },
             { name: 'N. Pokédex', value: `#${pokemon.id}`, inline: true },
             { name: 'Level', value: `${pokemonLevel}`, inline: true },
-            { name: 'Shiny?', value: `${pokemonIsShiny}`, inline: true },
+            { name: 'Shiny', value: `${pokemonIsShiny}`, inline: true },
+            { name: 'Taxa de cresc.', value: `${growthRate[growthRandom]}`, inline: true },
             { name: 'Exp ao derrotar', value: `${pokemon.base_experience}`, inline: true }
           )
           .setImage(`${pokemonSprite}`)

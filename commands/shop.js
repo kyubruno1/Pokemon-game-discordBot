@@ -63,7 +63,7 @@ module.exports = {
       }
     } else if (shopItem == 'itemEvo1') {
       if (price < 0) {
-        await interaction.reply({ content: `Você não tem saldo suficiente` });
+        await interaction.reply({ content: `Você não tem saldo suficiente`, ephemeral: true });
       } else {
         evo_item_1 += +quantity;
         await InventoryDB.update(
@@ -79,7 +79,7 @@ module.exports = {
       }
     } else if (shopItem == 'itemEvo2') {
       if (price < 0) {
-        await interaction.reply({ content: `Você não tem saldo suficiente` });
+        await interaction.reply({ content: `Você não tem saldo suficiente`, ephemeral: true });
       } else {
         evo_item_2 += +quantity;
         await InventoryDB.update(
@@ -95,7 +95,7 @@ module.exports = {
       }
     } else if (shopItem == 'itemEvo3') {
       if (price < 0) {
-        await interaction.reply({ content: `Você não tem saldo suficiente` });
+        await interaction.reply({ content: `Você não tem saldo suficiente`, ephemeral: true });
       } else {
         evo_item_3 += +quantity;
         await InventoryDB.update(

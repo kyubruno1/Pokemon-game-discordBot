@@ -28,5 +28,7 @@ const Pokemon = db.define(
 
 Pokemon.belongsTo(Player);
 
+// Inventory.hasMany(Pokemon);
+
 module.exports = Pokemon;
 // export default Pokemon;

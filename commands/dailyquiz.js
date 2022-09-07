@@ -101,8 +101,9 @@ module.exports = {
         const filter = (reaction, user) => {
           //verifica se o usuario que reagiu é o autor da interação, se não for, remove a reação dele
           const sorter =
-            (['1️⃣', '2️⃣', '3️⃣'].includes(reaction.emoji.name) && user.id === interaction.user.id) ||
-            botId === reaction.message.author.id;
+            ['1️⃣', '2️⃣', '3️⃣'].includes(reaction.emoji.name) && user.id === interaction.user.id;
+          // botId === reaction.message.author.id;
+
           if (sorter) {
             return sorter;
           } else {

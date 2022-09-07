@@ -74,6 +74,7 @@ async function catchPokemon(userID) {
 
 async function getAllPokemons(userID) {
   const pokemons = await PokemonDB.findAll({ where: { PlayerDiscordId: userID } });
+  // const pokemons = await result.toJSON();
   return pokemons;
 }
 

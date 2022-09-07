@@ -26,11 +26,15 @@ module.exports = {
           ephemeral: true,
         });
       } else {
-        const pokemonName = interaction.message.embeds[0].fields[0].value;
-        const pokemonId = interaction.message.embeds[0].fields[1].value;
-        const pokemonLevel = interaction.message.embeds[0].fields[2].value;
-        const pokemonShiny = interaction.message.embeds[0].fields[3].value;
+        //pokemon info
+        const pokemonName = interaction.message.embeds[0].fields[1].value;
+        const pokemonId = interaction.message.embeds[0].fields[2].value;
+        const cleanPokemonId = pokemonId.replace('#', '');
+        const pokemonLevel = interaction.message.embeds[0].fields[3].value;
+        const pokemonShiny = interaction.message.embeds[0].fields[4].value;
         const pokemonGrowth = 'Normal';
+        const growthRate = ['Muito lento', 'Lento', 'Normal', 'Rápido', 'Muito rápido'];
+        const random = Math.floor(Math.random() * growthRate.length);
 
         const porcentagem = catchPercentage(pokemonLevel);
         const dice = Math.floor(Math.random() * 100) + 1;
@@ -49,8 +53,8 @@ module.exports = {
         if (dice <= porcentagem) {
           await PokemonDB.create({
             name: pokemonName,
-            pokedex_id: pokemonId,
-            growth_rate: pokemonGrowth,
+            pokedex_id: cleanPokemonId,
+            growth_rate: growthRate[random],
             is_shiny: pokemonShiny,
             total_exp: pokemonLevel,
             PlayerDiscordId: interaction.user.id,

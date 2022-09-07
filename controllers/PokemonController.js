@@ -16,7 +16,9 @@ async function savePokemon(name, pokedex_id, PlayerDiscordId) {
   await PokemonDB.create({ name, pokedex_id, PlayerDiscordId });
 }
 async function getAllPokemons(userID) {
-  const pokemons = await PokemonDB.findAll({ where: { PlayerDiscordId: userID } });
+  const result = await PokemonDB.findAll({ where: { PlayerDiscordId: userID } });
+  const pokemons = await result.json();
+  console.log(result);
   return pokemons;
 }
 
