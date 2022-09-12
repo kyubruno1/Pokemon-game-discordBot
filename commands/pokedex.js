@@ -11,7 +11,6 @@ module.exports = {
       const pokeArray = [];
       pokemons.forEach((item) => {
         const clean = item.pokedex_id.replace('#', '');
-        // console.log(item);
         let pokemon = {
           pokedex_id: `${clean}`,
           pokemon_name: `${item.name}`,

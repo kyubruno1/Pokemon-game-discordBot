@@ -118,6 +118,7 @@ module.exports = {
         collector.on('collect', async (i) => {
           if (i.user.id === interaction.user.id) {
             if (i.customId === 'catch') {
+              console.log(row.components);
               row.components[0].setDisabled(true); //desabilita botão capturar
               row.components[1].setDisabled(true); //desabilita botão batalhar
             }
@@ -133,8 +134,7 @@ module.exports = {
           row.components[1].setDisabled(true); //desabilita botão batalhar
           interaction.editReply({ content: 'Acabou o tempo!', components: [row] });
         });
-        // if (acabou == true) {
-        // }
+
         await interaction.reply({
           content: `${interaction.user}`,
           // ephemeral: true,
