@@ -17,7 +17,6 @@ for (i = 1; i <= 100; i++) {
 }
 
 const expPath = path.join(__dirname, 'data', 'exp_table.json');
-console.log(expPath);
 
 async function createFile() {
   if (!fs.existsSync(expPath)) {

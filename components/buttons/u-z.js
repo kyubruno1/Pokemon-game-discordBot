@@ -1,7 +1,10 @@
 const PokemonDB = require('../../models/Pokemon');
-const { Op } = require('sequelize');
 const { ActionRowBuilder, SelectMenuBuilder } = require('discord.js');
-const { createButtons, coletor } = require('../../functions/battleButtonCreate');
+const {
+  createButtons,
+  collector,
+  selectMenuCollector,
+} = require('../../functions/battleButtonCreate');
 
 module.exports = {
   data: {
@@ -19,8 +22,11 @@ module.exports = {
       const clean = item.pokedex_id.replace('#', '');
       let pokemon = {
         id: `${clean}`,
+        dbId: `${item.id}`,
         name: `${item.name}`,
-        level: `${item.total_exp}`,
+        level: `${item.level}`,
+        exp_to_next_level: `${item.exp_to_next_level}`,
+        growth: `${item.growth_rate}`,
       };
       pokeArray.push(pokemon);
       // pokeArray.push(`\n**Pokedex**: #${clean}\n - ${item.name} - LVL ${item.total_exp}\n`);
@@ -33,12 +39,11 @@ module.exports = {
 
     pokeArray.forEach((item) => {
       if (
-        item.name.startsWith('u') ||
-        item.name.startsWith('v') ||
-        item.name.startsWith('w') ||
-        item.name.startsWith('x') ||
-        item.name.startsWith('y') ||
-        item.name.startsWith('z')
+        item.name.startsWith('k') ||
+        item.name.startsWith('l') ||
+        item.name.startsWith('m') ||
+        item.name.startsWith('n') ||
+        item.name.startsWith('o')
       ) {
         newArr.push(item);
       }
@@ -47,7 +52,7 @@ module.exports = {
     const botoes = createButtons();
 
     if (newArr.length == 0) {
-      coletor(interaction, botoes);
+      collector(interaction, botoes);
       await interaction.reply({
         content: 'Você não tem pokemons nesta categoria, escolha outra',
         components: [botoes],
@@ -62,7 +67,8 @@ module.exports = {
       let items = {
         label: item.name,
         description: `Level: ${item.level}`,
-        value: `${item.name}${item.level}${item.id}`,
+        value: `id:${item.id}, name:${item.name}, level:${item.level}, dbId:${item.dbId}, levelExp:${item.exp_to_next_level}, growth:${item.growth}`,
+        // value: { id: item.id },
       };
       options.push(items);
     });
@@ -73,8 +79,10 @@ module.exports = {
         .setPlaceholder('Nenhum selecionado')
         .addOptions(options)
     );
+
+    selectMenuCollector(interaction, row);
     await interaction.reply({
-      content: 'u-z',
+      content: 'Escolha um pokémon com as iniciais entre U-Z',
       components: [row],
       ephemeral: true,
     });

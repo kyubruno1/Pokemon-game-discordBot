@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const InventoryDB = require('../../models/Inventory');
 const { catchPercentage } = require('../../controllers/CatchController');
 const PokemonDB = require('../../models/Pokemon');
@@ -32,16 +34,41 @@ module.exports = {
         const cleanPokemonId = pokemonId.replace('#', '');
         const pokemonLevel = interaction.message.embeds[0].fields[3].value;
         const pokemonShiny = interaction.message.embeds[0].fields[4].value;
-        const pokemonGrowth = 'Normal';
-        const growthRate = ['Muito lento', 'Lento', 'Normal', 'Rápido', 'Muito rápido'];
-        const random = Math.floor(Math.random() * growthRate.length);
-
-        const porcentagem = catchPercentage(pokemonLevel);
-        const dice = Math.floor(Math.random() * 100) + 1;
+        const pokemonGrowth = interaction.message.embeds[0].fields[5].value;
+        const growthRate = [
+          {
+            name: 'Muito lento',
+            rate: 0.5,
+          },
+          {
+            name: 'Lento',
+            rate: 0.8,
+          },
+          {
+            name: 'Normal',
+            rate: 1,
+          },
+          {
+            name: 'Rápido',
+            rate: 1.5,
+          },
+          {
+            name: 'Muito rápido',
+            rate: 2,
+          },
+        ];
+        const rate = growthRate.find((element) => element.name == pokemonGrowth);
 
         //modifica a quantidade de pokebola no banco de dados
         playerPokeball = playerPokeball - 1;
         playerInventory.update({ pokeball: playerPokeball });
+
+        //recupera a tabela de exp
+        const dataPath = path.join(__dirname, '..', '..', 'assets', 'data', `exp_table.json`);
+        const data = fs.readFileSync(dataPath, { encoding: 'utf8', flag: 'r' });
+        const expData = JSON.parse(data);
+
+        const nextLevelExp = expData.find((item) => item.lvl == pokemonLevel);
 
         /* Tanto dado quanto a porcentagem são numeros de 0 a 100
         a porcentagem indica o número limite 
@@ -49,14 +76,17 @@ module.exports = {
         assim que rolar o dado, será dado um valor de 0 a 100. .
         Caso o número do dado for maior que a porcentagem, indica que não capturou o pokemon
         */
+        const porcentagem = catchPercentage(pokemonLevel);
+        const dice = Math.floor(Math.random() * 100) + 1;
 
         if (dice <= porcentagem) {
           await PokemonDB.create({
             name: pokemonName,
             pokedex_id: cleanPokemonId,
-            growth_rate: growthRate[random],
+            growth_rate: rate.rate,
             is_shiny: pokemonShiny,
-            total_exp: pokemonLevel,
+            level: pokemonLevel,
+            exp_to_next_level: nextLevelExp.expToNextLevel,
             PlayerDiscordId: interaction.user.id,
           });
 

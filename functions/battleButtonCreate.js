@@ -11,10 +11,35 @@ function createButtons() {
   return row;
 }
 
-function coletor(interaction, row) {
+function createButtonsEvolution() {
+  const row = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId('evo_one')
+      .setLabel('Base → Evolução 1')
+      .setStyle(ButtonStyle.Primary),
+    new ButtonBuilder()
+      .setCustomId('evo_two')
+      .setLabel('Evolução 1 → Evolução 2')
+      .setStyle(ButtonStyle.Primary)
+  );
+  return row;
+}
+
+// function createButtonsEvolution() {
+//   const row = new ActionRowBuilder().addComponents(
+//     new ButtonBuilder().setCustomId('evolution-ae').setLabel('A-E').setStyle(ButtonStyle.Success),
+//     new ButtonBuilder().setCustomId('evolution-fj').setLabel('F-J').setStyle(ButtonStyle.Success),
+//     new ButtonBuilder().setCustomId('evolution-ko').setLabel('K-O').setStyle(ButtonStyle.Success),
+//     new ButtonBuilder().setCustomId('evolution-pt').setLabel('P-T').setStyle(ButtonStyle.Success),
+//     new ButtonBuilder().setCustomId('evolution-uz').setLabel('U-Z').setStyle(ButtonStyle.Success)
+//   );
+//   return row;
+// }
+
+function collector(interaction, row) {
   const collector = interaction.channel.createMessageComponentCollector({
     componentType: ComponentType.Button,
-    time: 4000,
+    time: 30000,
   });
 
   collector.on('collect', async (i) => {
@@ -38,4 +63,23 @@ function coletor(interaction, row) {
   });
 }
 
-module.exports = { createButtons, coletor };
+function selectMenuCollector(interaction, row) {
+  // console.log(row.components[0]);
+  // console.log(interaction);
+  const collector = interaction.channel.createMessageComponentCollector({
+    componentType: ComponentType.SelectMenu,
+    time: 30000,
+  });
+
+  collector.on('collect', async (i) => {
+    row.components[0].setDisabled(true);
+
+    await interaction.editReply({ components: [row] });
+  });
+  collector.on('end', async (i) => {
+    row.components[0].setDisabled(true);
+    interaction.editReply({ content: 'Acabou o tempo!', components: [row] });
+  });
+}
+
+module.exports = { createButtons, collector, createButtonsEvolution, selectMenuCollector };

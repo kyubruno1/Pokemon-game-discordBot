@@ -89,18 +89,23 @@ async function evolvePokemon(pokemonID) {
   const result = await fetch(`https://pokeapi.co/api/v2/evolution-chain/${pokemonID}/`);
   const pokemon = await result.json();
   console.table(pokemon);
-  //   console.log(pokemon.chain.evolves_to);
-  //   console.log(pokemon.chain.evolves_to[0].species.url);
-  // if (evo.evolves_to[0].species.name === 'ivysaur') {
-  //   console.log(evo.evolves_to[0].evolves_to);
-  // }
 }
 
 async function starterPokemon(customId, userID) {
   const result = await fetch(`http://pokeapi.co/api/v2/pokemon/${customId}/`);
   const pokemon = await result.json();
+  // const growthRate = ['Muito lento', 'Lento', 'Normal', 'Rápido', 'Muito rápido'];
+  // const random = Math.floor(Math.random() * growthRate.length);
 
-  await PokemonDB.create({ name: pokemon.name, pokedex_id: pokemon.id, PlayerDiscordId: userID });
+  await PokemonDB.create({
+    name: pokemon.name,
+    pokedex_id: pokemon.id,
+    growth_rate: '1',
+    is_shiny: '0',
+    level: '1',
+    exp_to_next_level: '100',
+    PlayerDiscordId: userID,
+  });
   return pokemon;
 }
 

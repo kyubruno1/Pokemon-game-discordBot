@@ -44,6 +44,20 @@ module.exports = {
           ephemeral: true,
         });
       } else {
+        // const eventChance = 5;
+        // const eventDice = getEvent(5);
+        // if (eventDice <= eventChance) {
+        //   const event = createEvent();
+        //   console.log(event);
+        //   // console.log(EmbedEvent);
+        //   // interaction.reply({
+        //   //   content: `Evento!`,
+        //   //   embeds: [EmbedEvent],
+        //   //   components: [rowButtonEvent],
+        //   // });
+        //   return;
+        // }
+
         //encontro do pokemon
         const encounterPath = path.join(__dirname, '..', 'assets', 'data', 'encounter_method.json');
         let encounter = fs.readFileSync(encounterPath, { encoding: 'utf8', flag: 'r' });
@@ -118,7 +132,6 @@ module.exports = {
         collector.on('collect', async (i) => {
           if (i.user.id === interaction.user.id) {
             if (i.customId === 'catch') {
-              console.log(row.components);
               row.components[0].setDisabled(true); //desabilita botão capturar
               row.components[1].setDisabled(true); //desabilita botão batalhar
             }

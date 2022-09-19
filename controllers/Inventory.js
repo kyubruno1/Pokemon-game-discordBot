@@ -4,7 +4,7 @@ class Inventory {
     this.items = [
       {
         name: 'pokeball',
-        qnt: 5,
+        qnt: 10,
       },
       {
         name: 'moedas',

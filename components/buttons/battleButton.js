@@ -1,49 +1,50 @@
-const { getAllPokemons } = require('../../controllers/CatchController');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
-
+const { createButtons, collector } = require('../../functions/battleButtonCreate');
+const fs = require('fs');
+const path = require('path');
+const wait = require('node:timers/promises').setTimeout;
 module.exports = {
   data: {
     name: `battle`,
   },
   async execute(interaction) {
     try {
-      const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('a-e').setLabel('A-E').setStyle(ButtonStyle.Primary),
-        new ButtonBuilder().setCustomId('f-j').setLabel('F-J').setStyle(ButtonStyle.Primary),
-        new ButtonBuilder().setCustomId('k-o').setLabel('K-O').setStyle(ButtonStyle.Primary),
-        new ButtonBuilder().setCustomId('p-t').setLabel('P-T').setStyle(ButtonStyle.Primary),
-        new ButtonBuilder().setCustomId('u-z').setLabel('U-Z').setStyle(ButtonStyle.Primary)
-      );
+      const row = createButtons();
 
       //cria coletor para saber se usuário já clicou no botão
-      const collector = interaction.channel.createMessageComponentCollector({
-        componentType: ComponentType.Button,
-        time: 30000,
-      });
+      collector(interaction, row);
 
-      collector.on('collect', async (i) => {
-        if (i.user.id === interaction.user.id) {
-          row.components[0].setDisabled(true);
-          row.components[1].setDisabled(true);
-          row.components[2].setDisabled(true);
-          row.components[3].setDisabled(true);
-          row.components[4].setDisabled(true);
+      const expPath = path.join(
+        __dirname,
+        '..',
+        '..',
+        'assets',
+        'data',
+        'playerBattlePokemon',
+        `${interaction.user.id}.json`
+      );
 
-          interaction.editReply({ components: [row] });
-        }
-      });
-      collector.on('end', async (i) => {
-        row.components[0].setDisabled(true);
-        row.components[1].setDisabled(true);
-        row.components[2].setDisabled(true);
-        row.components[3].setDisabled(true);
-        row.components[4].setDisabled(true);
-        interaction.editReply({ content: 'Acabou o tempo!', components: [row] });
+      const pokeName = interaction.message.embeds[0].data.fields[1].value;
+      const pokeLvl = interaction.message.embeds[0].data.fields[3].value;
+      const pokeId = interaction.message.embeds[0].data.fields[2].value;
+      const pokeDefeatExp = interaction.message.embeds[0].data.fields[6].value;
+
+      const data = {
+        id: pokeId,
+        name: pokeName,
+        level: pokeLvl,
+        gainExp: pokeDefeatExp,
+      };
+
+      fs.writeFileSync(expPath, JSON.stringify(data), (err) => {
+        console.log('criou');
+        if (err) throw err;
       });
 
       await interaction.reply({
         content: 'Escolha a inicial do pokemon que deseja escolher',
         components: [row],
+        ephemeral: true,
+        // values: 'teste',
       });
     } catch (error) {
       console.log(error);

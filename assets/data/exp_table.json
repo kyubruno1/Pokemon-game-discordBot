@@ -1,6 +1,6 @@
 [
   { "lvl": 1, "expToNextLevel": "100", "accumulatedExp": "0" },
-  { "lvl": 2, "expToNextLevel": "107", "accumulatedExp": "107" },
+  { "lvl": 2, "expToNextLevel": "107", "accumulatedExp": "100" },
   { "lvl": 3, "expToNextLevel": "114", "accumulatedExp": "221" },
   { "lvl": 4, "expToNextLevel": "123", "accumulatedExp": "344" },
   { "lvl": 5, "expToNextLevel": "131", "accumulatedExp": "475" },
@@ -98,5 +98,5 @@
   { "lvl": 97, "expToNextLevel": "66198", "accumulatedExp": "1010350" },
   { "lvl": 98, "expToNextLevel": "70831", "accumulatedExp": "1081181" },
   { "lvl": 99, "expToNextLevel": "75790", "accumulatedExp": "1156971" },
-  { "lvl": 100, "expToNextLevel": "81095", "accumulatedExp": "1238066" }
+  { "lvl": 100, "expToNextLevel": "9999999999999999", "accumulatedExp": "1238066" }
 ]

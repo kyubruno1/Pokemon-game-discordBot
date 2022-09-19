@@ -14,7 +14,7 @@ module.exports = {
         let pokemon = {
           pokedex_id: `${clean}`,
           pokemon_name: `${item.name}`,
-          pokemon_level: `${item.total_exp}`,
+          pokemon_level: `${item.level}`,
         };
         pokeArray.push(pokemon);
         // pokeArray.push(`\n**Pokedex**: #${clean}\n - ${item.name} - LVL ${item.total_exp}\n`);

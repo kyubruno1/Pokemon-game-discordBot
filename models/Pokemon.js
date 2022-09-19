@@ -17,7 +17,10 @@ const Pokemon = db.define(
     is_shiny: {
       type: DataTypes.BOOLEAN,
     },
-    total_exp: {
+    level: {
+      type: DataTypes.INTEGER,
+    },
+    exp_to_next_level: {
       type: DataTypes.INTEGER,
     },
   },
